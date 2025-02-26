@@ -1,0 +1,16 @@
+.just-a-regular-link {
+  display: inline !important;
+  padding: 0 !important;
+  background: none !important;
+  color: black !important;
+  text-decoration: underline !important;
+}
+.hide-initially {
+  display: none;
+}
+.hide-always {
+  display: none;
+}
+.my-template {
+  display: none;
+}

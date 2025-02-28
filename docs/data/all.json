@@ -1,0 +1,27 @@
+{
+  "languages": [
+    "en",
+    "fr"
+  ],
+  "translations": {
+    "fr": {
+      "Synthetic Data": "Données synthétiques",
+      "Column Name": "Nom de la colonne",
+      "Describe CSV columns, and we'll generate the CSV for you.": "Décrivez les colonnes de votre CSV, puis il sera généré plus bas.",
+      "Template by": "Template par",
+      "Contact Us": "Contactez-nous",
+      "Start Now": "Commencez",
+      "About synthetic data": "À propos de données synthétiques",
+      "Generate": "Générez",
+      "rows": "rangées",
+      "a": "Nous avons souvent besoin de données synthétiques sous forme de CSV dans le cadre de nos projets de programmation ou de comptabilité. Il existe des outils puissants comme sdv.dev, mais parfois on a juste besoin d'un CSV simple et rapide. C'est pour cela que nous avons créé ce site.",
+      "Visualize": "Visualisez",
+      "Download CSV": "Téléchargez le CSV",
+      "specify": "spécifiez",
+      "Generate a": "Générez un CSV de",
+      "Synthetic Data CSV": "données synthétiques",
+      "for your tests": "pour vos tests",
+      "For example, a 1000-line CSV with fake banking data, or fake products with prices": "Par exemple, un fichier CSV de 1000 lignes de données bancaires bidon, ou de produits bidons avec prix"
+    }
+  }
+}

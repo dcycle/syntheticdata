@@ -14,3 +14,14 @@
 .my-template {
   display: none;
 }
+.languages .language {
+  color: white;
+  padding: 0 10px;
+}
+.languages .language a {
+  color: white;
+  text-decoration: underline;
+}
+.text-align-right {
+  text-align: right;
+}

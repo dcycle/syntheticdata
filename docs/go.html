@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  
+
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y2CFJPC027"></script>
 <script>
@@ -104,12 +104,14 @@
                     </td>
                     <td>
                       <select class="my-type">
-                        <option value="" selected>-choisissez-</option>
-                        <option value="name">Nom complet</option>
-                        <option value="age">Entier (min-max)</option>
+                        <option class="translate-me" value="">- choose -</option>
+                        <option class="translate-me" value="text">Text</option>
+                        <option class="translate-me" value="number" number>Number</option>
                       </select>
                     </td>
-                    <td></td>
+                    <td>
+                      <input size="10" type="text" class="more" name="more" value="">
+                    </td>
                     <td><i class="fa-solid fa-trash delete-row"></i></td>
                   </tr>
                   <tr draggable='true' ondragstart='start()' ondragover='dragover()'>
@@ -121,12 +123,13 @@
                     </td>
                     <td>
                       <select class="my-type">
-                        <option value="">-choisissez-</option>
-                        <option value="name" selected>Nom complet</option>
-                        <option value="age">Entier (min-max)</option>
-                      </select>
+                        <option class="translate-me" value="">- choose -</option>
+                        <option class="translate-me" value="text" selected>Text</option>
+                        <option class="translate-me" value="number" number>Number</option>
                     </td>
-                    <td></td>
+                    <td>
+                      <input size="10" type="text" class="more" name="more" value="">
+                    </td>
                     <td><i class="fa-solid fa-trash delete-row"></i></td>
                   </tr>
                   <tr draggable='true' ondragstart='start()' ondragover='dragover()'>
@@ -138,13 +141,13 @@
                     </td>
                     <td>
                       <select class="my-type">
-                        <option value="">-choisissez-</option>
-                        <option value="name">Nom complet</option>
-                        <option value="age" selected>Entier (min-max)</option>
+                        <option class="translate-me" value="">- choose -</option>
+                        <option class="translate-me" value="text">Text</option>
+                        <option class="translate-me" value="number" number selected>Number</option>
                       </select>
                     </td>
                     <td>
-                      <input size="10" type="text" id="fname" name="fname" value="18-55">
+                      <input size="10" type="text" class="more" name="more" value="18-55">
                     </td>
                     <td><i class="fa-solid fa-trash delete-row"></i></td>
                   </tr>
@@ -185,6 +188,12 @@
 
   <!-- end experience section -->
 
+  <section class="about_section layout_padding-bottom">
+    <div class="container">
+      <div class="row put-table-here">
+      </div>
+    </div>
+  </section>
 
   <!-- about section -->
 
@@ -204,7 +213,7 @@
         <p class="translate-me">
           We often need sythetic data in the form of a CSV, for programming projects, testing, or accounting. There are some pretty powerful tools out there, like sdv.dev (check it out!), but sometimes we just need a quick and simple CSV. That's why we made this tool for you.
         </p>
-        <a href="mailto:donneessynthetiques@gmail.com" class="translate-me">
+        <a href="https://blog.dcycle.com/contact/" class="translate-me">
           Contact Us
         </a>
       </div>

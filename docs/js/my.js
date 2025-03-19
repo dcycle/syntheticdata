@@ -1,3 +1,4 @@
+
 /** Services singleton. Contains all other singletons. */
 class Services {
   /** Init all the singletons. */
@@ -12,6 +13,7 @@ class Services {
     this.url = await new Url(this).preload();
     this.multilingual = await new Multilingual(this).preload();
     this.multilingualDom = await new MyMultilingualDom(this).preload();
+    this.utilities = await new MyUtilities(this).preload();
     return this;
   }
   /** Get a singleton. */
@@ -761,6 +763,11 @@ class MyConfig extends Service {
     return this.data['translations'];
   }
 
+  randomWords() {
+    this.assertPreloaded();
+    return this.data['randomWords'];
+  }
+
   /** Get available languages. */
   languages() {
     this.assertPreloaded();
@@ -799,9 +806,34 @@ class App extends Service {
   createCsvInDiv() {
     $('#csv').text(this.s('csvGen').getCsv());
   }
+  csvToTable(max) {
+    $('.put-table-here').empty();
+    const all = $('#csv').text().split('\n');
+    const headers = all[0].split(',');
+    all.shift();
+    const firstRows = all.slice(0, max);
+    $('.put-table-here').append(`<table class="white-gradient-over table">
+    <thead>
+      <tr>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+    </table>`);
+    headers.forEach((header) => {
+      $('.put-table-here thead tr').append(`<th scope="col">${header}</th>`);
+    });
+    firstRows.forEach((row) => {
+      const cells = row.split(',');
+      $('.put-table-here tbody').append('<tr></tr>');
+      cells.forEach((cell) => {
+        $('.put-table-here tbody tr:last').append(`<td>${cell}</td>`);
+      });
+    });
+  }
   visualize() {
     this.createCsvInDiv();
-    alert('Visualize not implemented.');
+    this.csvToTable(10);
   }
   download() {
     this.createCsvInDiv();
@@ -816,16 +848,130 @@ class App extends Service {
   }
 }
 
+class Column extends Service {
+  constructor(services, name, type, more) {
+    super(services);
+    this._name = name;
+    this._type = type;
+    this._more = more;
+  }
+  getName() {
+    return this._name;
+  }
+  randomValue() {
+    return this._type + ' is undefined';
+  }
+  selfTest() {
+    for (let i = 0; i < 30; i++) {
+      console.log(this.randomValue());
+    }
+  }
+}
+
+class ColumnText extends Column {
+  randomValue() {
+    return this.s('utilities')
+      .randomArrayElem(this.s('config').randomWords());
+  }
+}
+
+class ColumnNumber extends Column {
+  range(index) {
+    if (this._more) {
+      const split = this._more.split('-');
+      if (split.length == 2) {
+        if (!Number.isNaN(split[index])) {
+          return parseFloat(split[index]);
+        }
+      }
+    }
+    return parseFloat(index);
+  }
+  getFloor() {
+    return this.range(0);
+  }
+  getCeil() {
+    return this.range(1);
+  }
+  numDecimalPoints() {
+    // If there is a "." in _more, then we'll have 2 decimal points
+    if (this._more && this._more.indexOf('.') > -1) {
+      return 2;
+    }
+    return 0;
+  }
+  randomValue() {
+    const range = this.getCeil() - this.getFloor();
+    const rand = parseFloat(Math.random());
+    const floor = parseFloat(this.getFloor());
+    const ret = ((rand * range) + floor).toFixed(this.numDecimalPoints());
+    return ret.toString();
+  }
+}
+
+class ColumnUnknown extends Column {
+}
+
 class CsvGen extends Service {
+  /**
+   * @returns something like 'a,b,c\n1,2,3\n4,5,6'.
+   */
   getCsv() {
-    return 'a,b,c\n1,2,3\n4,5,6';
+    const columns = this.getColumns();
+    let colNames = []
+    let ret = '';
+    columns.forEach((column) => {
+      colNames.push(column.getName());
+    });
+    ret += colNames.join(',') + '\n';
+    for (let i = 0; i < this.numRows(); i++) {
+      ret += this.getRow(columns) + '\n';
+    };
+    return ret;
+  }
+  getRow(columns) {
+    let ret = [];
+    columns.forEach((column) => {
+      ret.push(column.randomValue(column));
+    });
+    return ret.join(',');
+  }
+  numRows() {
+    const raw = parseInt($('.count-values').val());
+    if (Number.isNaN(raw)) {
+      return 20;
+    }
+    if (raw > 1000) {
+      return 1000;
+    }
+    if (raw < 1) {
+      return 1;
+    }
+    return raw;
+  }
+  newColumn(
+    name,
+    type,
+    more,
+  ) {
+    switch (type) {
+      case 'text':
+        return new ColumnText(services, name, type, more);
+      case 'number':
+        return new ColumnNumber(services, name, type, more);
+      default:
+        return new ColumnUnknown(services, name, type, more);
+    }
   }
   getColumns() {
     let ret = [];
+    const that = this;
     $('tr[draggable=true]').each(function() {
-      //ret.push(new Column($(this)));
-      console.log($(this).find('.col-header').attr('value'));
-      console.log($(this).find('.my-type').attr('value'));
+      ret.push(that.newColumn(
+        $(this).find('.col-header').val(),
+        $(this).find('.my-type').val(),
+        $(this).find('.more').val(),
+      ));
     });
     return ret;
   }
